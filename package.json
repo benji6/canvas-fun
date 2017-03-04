@@ -1,0 +1,23 @@
+{
+  "name": "canvas-fun",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benji6/canvas-fun.git"
+  },
+  "author": "Ben Hall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benji6/canvas-fun/issues"
+  },
+  "homepage": "https://github.com/benji6/canvas-fun#readme",
+  "devDependencies": {
+    "live-server": "^1.2.0"
+  }
+}
