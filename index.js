@@ -5,7 +5,7 @@ canvas.height = innerHeight
 canvas.width = innerWidth
 
 const createNodes = () => {
-  const n = innerWidth / 20
+  const n = Math.min(innerWidth, innerHeight) / 10
   const nodes = []
   for (let x = 0; x < n; x++) {
     for (let y = 0; y < n; y++) {nodes.push({
@@ -19,32 +19,43 @@ const createNodes = () => {
   return nodes
 }
 
-const velocity = ({x, y}, node) => (node.vx += x, node.vy += y, node)
+const position = (attractor, node) => {
+  const xDelta = attractor.x - node.x
+  const yDelta = attractor.y - node.y
+  const r = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2))
+  const forceMagnitude = Math.min(2e-4, Math.max(2e-6, 1 / Math.pow(r, 2)))
+  const force = {
+    x: xDelta * forceMagnitude,
+    y: yDelta * forceMagnitude,
+  }
+  node.vx += force.x
+  node.vy += force.y
+  node.x += node.vx
+  node.y += node.vy
+  return node
+}
 
 const nodes = createNodes()
 
 const render = t => {
   requestAnimationFrame(render)
 
-  const attractionSrc = {x: innerWidth / 2 + Math.sin(t * 0.005) * innerWidth, y: innerHeight / 2 + Math.cos(t * 0.005) * innerHeight}
-
-  const force = ({x, y}) => {
-    const x_ = x > attractionSrc.x ? -0.1 : 0.1
-    const y_ = y > attractionSrc.y ? -0.1 : 0.1
-    return {x: x_, y: y_}
+  const attractor = {
+    x: innerWidth / 2 + Math.sin(t * 0.0005) * innerWidth / 8,
+    y: innerHeight / 2 + Math.cos(t * 0.0005) * innerHeight / 8,
   }
 
-  context.fillStyle = `rgba(0,0,0,${Math.sin(t * 0.0005)})`
+  context.fillStyle = `rgba(0,0,0,${Math.abs(Math.cos(t * 0.0001))})`
   context.fillRect(0, 0, canvas.width, canvas.height)
-  nodes.map(node => {
-    velocity(force(node), node)
-    node.x += node.vx
-    node.y += node.vy
-  })
-  for (const {c, x, y} of nodes) {
-    context.fillStyle = c
-    context.fillRect(x, y, 1, 1)
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i]
+    position(attractor, node)
+    if (node.x > 0 && node.x < innerWidth && node.y > 0 && node.y < innerHeight) {
+      context.fillStyle = node.c
+      context.fillRect(node.x, node.y, 1, 1)
+    }
   }
 }
 
-render()
+requestAnimationFrame(render)
