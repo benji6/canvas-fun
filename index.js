@@ -23,7 +23,7 @@ const position = (attractor, node) => {
   const xDelta = attractor.x - node.x
   const yDelta = attractor.y - node.y
   const r = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2))
-  const forceMagnitude = Math.min(2e-4, Math.max(2e-6, 1 / Math.pow(r, 2)))
+  const forceMagnitude = r < 32 ? 0 : Math.max(2e-6, 1 / Math.pow(r, 2))
   const force = {
     x: xDelta * forceMagnitude,
     y: yDelta * forceMagnitude,
