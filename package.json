@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "live-server",
+    "build": "webpack",
+    "start": "webpack-dev-server --open",
     "test": "eslint ."
   },
   "repository": {
@@ -17,9 +18,14 @@
     "url": "https://github.com/benji6/canvas-fun/issues"
   },
   "homepage": "https://github.com/benji6/canvas-fun#readme",
+  "dependencies": {
+    "pixi.js": "^4.4.2"
+  },
   "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
     "eslint": "^3.17.0",
     "eslint-config-benji6": "^1.2.0",
-    "live-server": "^1.2.0"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
   }
 }
